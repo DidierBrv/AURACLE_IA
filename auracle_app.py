@@ -45,7 +45,7 @@ def voice_worker():
 
         if mot_cle_trouve:
             awake_until = time.time() + AWAKE_DURATION
-            clean_text = text.replace(mot_cle_trouve, "").strip()
+            clean_text = text.replace(mot_cle_trouve, "Auracle").strip()
             if clean_text:
                 command_queue.put(("Voix", clean_text))
             else:
@@ -74,7 +74,7 @@ def play_audio(text, filename="temp_response.mp3"):
         awake_until = time.time() + AWAKE_DURATION
 
 def network_worker():
-    human_fillers = ["Mmh...", "Laisse-moi réfléchir...", "Voyons voir...", "Je regarde ça..."]
+    human_fillers = ["Ok c'est en cours...", "Laisse-moi réfléchir...", "Voyons voir...", "Je regarde ça..."]
     while True:
         source, command = command_queue.get()
         ui_queue.put((source, command))
@@ -85,7 +85,7 @@ def network_worker():
         
         try:
             log_queue.put(f"[HTTP POST] Envoi vers {SERVER_URL}")
-            response = requests.post(SERVER_URL, json={"message": command})
+            response = requests.post(SERVER_URL, json={"message": command, "client_type": "pc"})
             data = response.json()
             
             if response.status_code == 200:
