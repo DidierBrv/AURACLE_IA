@@ -44,5 +44,6 @@ GROQ_API_KEY=gsk_your_groq_key
 
 ### 3. Usage
 python3 auracle_server.py
+
 python3 auracle_app.py
 
